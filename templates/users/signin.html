@@ -45,7 +45,7 @@
                     </p>
                 </div>
                 
-                <form method="post" class="space-y-5" action="{% url 'users:login' %}">
+                <form method="post" class="space-y-5" action="{% url 'users:signin' %}">
                     {% csrf_token %} <!-- CSRF token for security -->
                     
                     <!-- Display error/success messages -->
@@ -59,12 +59,14 @@
                     {% if user.is_authenticated %}
                         <p class="text-blue-600">Welcome, {{ user.username }}! <a href="{% url 'users:logout' %}">Logout</a></p>
                     {% else %}
-                        <p>Please <a href="{% url 'users:login' %}">Log In</a> or <a href="">Sign Up</a></p>
+                        <p>Please <a href="{% url 'users:signin' %}">Log In</a> or <a href="">Sign Up</a></p>
                     {% endif %}
                     
                     <!-- Username input field -->
                     <div class="space-y-2">
-                        <label for="username" class="text-sm font-medium text-gray-950">Username</label>
+                        <div class="flex items-center justify-between">
+                            <label for="username" class="text-sm font-medium text-gray-950">Username</label>
+                        </div>
                         <input type="text" class="h-12 bg-card border-border focus:border-primary focus:ring-primary"
                             name="username" id="username" aria-describedby="username" placeholder="Enter username"
                             required>
@@ -75,26 +77,26 @@
                         <div class="flex items-center justify-between">
 
                             <label for="password" class="text-sm font-medium text-gray-950">Password</label>
-                            <a href="{% url 'users:forgot' %}"
-                                class="text-sm text-primary hover:text-primary/80 transition-colors">
-                            Forgot password?
-                        </a>
                         </div>
-
+                        
                         <div class="relative">
                             <input type="password" name="password" class="h-12 bg-card border-border focus:border-primary focus:ring-primary pr-12" id="password"
                             placeholder="Password" required>
                             
                         </div>
+                        <a href="{% url 'users:forgot' %}"
+                            class="text-sm text-primary hover:text-primary/80 transition-colors">
+                        Forgot password?
+                    </a>
                     </div>
 
                     <!-- Link to registration page -->
-                    <p>Don't have an account <a href="{% url 'users:register' %}">Register</a> </p>
+                    <p>Don't have an account <a href="{% url 'users:signup' %}">Sign Up</a> </p>
 
 
 
 
-                    <input type="submit" value="Login">
+                    <input type="submit" value="signin">
                     <input type="hidden" name="next" value="{{ next }}">
                 </form>
             </div>
