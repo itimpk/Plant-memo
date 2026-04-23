@@ -1,10 +1,8 @@
-{% extends 'base.html' %}
-{% load tailwind_filters %}
+{% extends 'plants/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-{% include 'plants/header.html' %}
 <div>
-    <form method="POST" action="{% url 'plants:add_plant' %}" enctype="multipart/form-data">
+    <form method="POST" action="{% url 'plants:plant_create' %}" enctype="multipart/form-data">
             {% csrf_token %}  
             {{ form | crispy }}
             <button type="submit" class="">Create</button>

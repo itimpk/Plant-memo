@@ -24,7 +24,7 @@ def signin_view(request):
             return redirect('/users/signin/')
         else:
             login(request,user)
-            return redirect('/')
+            return redirect('/plants/home')
 
     return render(request, 'users/signin.html')
 

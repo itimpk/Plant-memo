@@ -1,0 +1,48 @@
+{% load static %}
+{% load tailwind_filters %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
+        My App
+      {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+    <script src="https://kit.fontawesome.com/623f5e8dbe.js" crossorigin="anonymous"></script>
+
+  </head>
+<body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
+  {% include 'plants/navbar.html' %}
+
+  <main class="grid grid-cols-1 lg:grid-cols-4 gap-4 grow w-full max-w-400 mx-auto px-4">
+    
+    <aside class="hidden lg:block lg:col-span-1">
+      <div class="sticky top-17 h-[calc(100vh-(--spacing(20)))] overflow-y-auto p-4">
+        <div class="bg-white rounded-lg shadow p-4">
+          Left/Top Content
+        </div>
+      </div>
+    </aside>
+
+    <section class="col-span-1 lg:col-span-2 py-4">
+      <div class="bg-white rounded-lg shadow min-h-[200vh] p-4">
+        {% block content %}
+          {% endblock %}
+      </div>
+    </section>
+
+    <aside class="hidden lg:block lg:col-span-1">
+      <div class="sticky top-17 h-[calc(100vh-(spacing.20))] overflow-y-auto p-4">
+        <div class="bg-white rounded-lg shadow p-4">
+          Right/Top Content
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+</body>
+</html>

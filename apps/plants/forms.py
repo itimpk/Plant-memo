@@ -17,7 +17,16 @@ class PlantForm(forms.ModelForm):
             'plant_date': forms.DateInput(attrs={'type': 'date','value': timezone.now().strftime('%Y-%m-%d')}),  # adds date picker
         }
 
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        # PULL 'user' from kwargs here:
+        user = kwargs.pop('user', None)
+        
         super().__init__(*args, **kwargs)
-        self.fields['group'].queryset = Group.objects.filter(user=user) 
+        
+        self.fields['group'].empty_label = "Select a group..."
         self.fields['image'].required = False
+        
+        # Only filter if a user was actually passed
+        if user:
+            self.fields['group'].queryset = Group.objects.filter(user=user)
+        

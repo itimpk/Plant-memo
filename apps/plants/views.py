@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from .forms import PlantForm,GroupForm
 from .models import Group,Plant
 
@@ -7,9 +7,9 @@ from .models import Group,Plant
 def home_view(request):
     plants = Plant.objects.filter(user=request.user)
     groups = Group.objects.filter(user=request.user)
-    return render(request,"plants/overviews.html",{"groups":groups,"plants":plants})
+    return render(request,"plants/home.html",{"groups":groups,"plants":plants})
 
-def add_group(request):
+def group_create(request):
     if request.method == "POST":
         group_form = GroupForm(request.POST)
         if group_form.is_valid():
@@ -19,16 +19,41 @@ def add_group(request):
             return redirect('/plants/home')
     else:
         group_form = GroupForm()
-    return render(request,"plants/add_group.html",{'form':group_form})
+    return render(request,"plants/group_create.html",{'form':group_form})
 
-def add_plant(request):
+def plant_create(request):
     if request.method == "POST":
-        form = PlantForm(request.user, request.POST, request.FILES)
+        form = PlantForm( request.POST, request.FILES,user=request.user)
         if form.is_valid():
             plant = form.save(commit=False)
             plant.user = request.user
             plant.save()
             return redirect('/plants/home')
     else:
-        form = PlantForm(request.user)  # pass user here
-    return render(request,"plants/add_plant.html",{'form':form})
+        form = PlantForm(user=request.user)  
+    return render(request,"plants/plant_create.html",{'form':form})
+
+def plant_detail(request,plant_id):
+    plant = Plant.objects.get(id = plant_id)
+    return render(request,"plants/plant_detail.html",{"plant":plant})
+
+def plant_update(request, plant_id):
+    plant = get_object_or_404(Plant, id=plant_id)
+    
+    if request.method == "POST":
+        # CRITICAL: You must pass user=request.user here too!
+        form = PlantForm(request.POST, request.FILES, instance=plant, user=request.user)
+        
+        if form.is_valid():
+            form.save() 
+            return redirect(f"/plants/plant/{plant.id}")
+    else:
+        # This part was already correct
+        form = PlantForm(instance=plant, user=request.user)
+        
+    return render(request, "plants/plant_update.html", {"form": form, "plant": plant})
+
+def plant_delete(request,plant_id):
+    plant = Plant.objects.get(id=plant_id)
+    plant.delete()
+    return redirect('/plants/home')

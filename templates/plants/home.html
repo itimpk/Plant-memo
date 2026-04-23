@@ -1,0 +1,21 @@
+{% extends 'plants/base.html' %}
+{% block content %}
+  <div>
+    <a href="{% url 'plants:group_create' %}" class="text-sm text-primary hover:text-primary/80 transition-colors bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Add Group</a>
+    <a href="{% url 'plants:plant_create' %}" class="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Add Plant</a>
+    {% for group in groups %}
+      <h3>{{ group.name }}</h3>
+
+      {% for plant in plants %}
+        {% if plant.group == group %}
+          <div>
+            <a href="{% url 'plants:plant_detail' plant.id %}">{{ plant.name }}</a>
+            {% if plant.image %}
+              <img src="{{ plant.image.url }}" alt="{{ plant.name }}" />
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </div>
+{% endblock %}
