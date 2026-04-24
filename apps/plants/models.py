@@ -26,3 +26,19 @@ class Plant(models.Model):
 
     def __str__(self):
         return self.name
+    
+class PlantLog(models.Model):
+    ACTION_CHOICES = [
+        ('water', 'Watering'),
+        ('feed', 'Fertilizing'),
+        ('prune', 'Pruning'),
+        ('note', 'General Note'),
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    action = models.CharField(max_length=20, choices=ACTION_CHOICES)
+    note = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.action} on {self.plant.name}"

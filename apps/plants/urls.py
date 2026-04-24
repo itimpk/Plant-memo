@@ -7,9 +7,11 @@ app_name = 'plants'  # ← namespace, important
 urlpatterns = [
     path('home/', views.home_view, name='home'),
     path('group/create', views.group_create, name='group_create'),
+    path('group/update/<int:id>', views.group_update, name='group_update'),
+    path('group/delete/<int:id>', views.group_delete, name='group_delete'),
     path('plant/create', views.plant_create, name='plant_create'),
     path('plant/<int:plant_id>', views.plant_detail, name='plant_detail'),
     path('plant/update/<int:plant_id>', views.plant_update, name='plant_update'),
     path('plant/delete/<int:plant_id>', views.plant_delete, name='plant_delete'),
-
+    path('plant/<int:plant_id>/log/', views.log_add, name='log_add'),
 ]

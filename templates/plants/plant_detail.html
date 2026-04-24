@@ -19,7 +19,45 @@
         </div>
         <p class="text-sm text-gray-500 mt-1">Last watered: 2 hours ago</p>
         <div class="mt-4 flex gap-2">
-          <button class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg text-sm font-medium">Log Task</button>
+          {% comment %} <button class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg text-sm font-medium">Log Task</button> {% endcomment %}
+
+          <div class="modal-container">
+            <button class="modal-open-btn flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg text-sm font-medium">Log Task</button>
+
+            <div class="modal-overlay hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+              <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform transition-all">
+                <div class="p-6">
+                  <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">Log Care for {{ plant.name }}</h3>
+                    <button class="modal-close-btn text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                  </div>
+
+                  <form method="POST" action="{% url 'plants:log_add' plant.id %}" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                      <label class="block text-sm font-semibold text-gray-600 mb-1">What did you do?</label>
+                      <select name="action" class="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20">
+                        <option value="water">Watered</option>
+                        <option value="feed">Fertilized</option>
+                        <option value="prune">Pruned</option>
+                        <option value="Note">Note</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="block text-sm font-semibold text-gray-600 mb-1">Notes</label>
+                      <textarea name="note" rows="3" class="w-full p-2.5 bg-gray-50 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="Optional notes..."></textarea>
+                    </div>
+
+                    <div class="flex gap-3 pt-2">
+                      <button type="submit" class="flex-1 bg-blue-600 text-white py-2.5 rounded-xl font-bold hover:bg-blue-700 transition">Save Log</button>
+                      <button type="button" class="modal-close-btn flex-1 bg-gray-100 text-gray-700 py-2.5 rounded-xl font-bold hover:bg-gray-200 transition">Cancel</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div class="relative inline-block text-left dropdown-container">
             <button class="dropdown-toggle px-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg py-2"><i class="fa-solid fa-ellipsis"></i></button>
@@ -34,7 +72,24 @@
         </div>
       </div>
     </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition mt-6 p-3">
+      <h3 class="font-bold ">Recent Activity</h3>
+      <ul class="space-y-2 p-3">
+        {% for log in logs|dictsortreversed:'created_at' %}
+          <li class="text-sm text-gray-600">
+            <span class="font-bold uppercase text-xs text-blue-500">{{ log.get_action_display }}</span>
+            - {{ log.created_at|date:'M d, H:i' }}
+            {% if log.note %}
+              <p class="italic text-gray-400">{{ log.note }}</p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
   </div>
+
   <script>
     // Select all dropdown containers
     const containers = document.querySelectorAll('.dropdown-container')
@@ -59,6 +114,37 @@
     // Close everything if clicking outside
     window.addEventListener('click', () => {
       document.querySelectorAll('.dropdown-menu').forEach((m) => m.classList.add('hidden'))
+    })
+    
+    // Select all modal containers
+    const modalContainers = document.querySelectorAll('.modal-container')
+    
+    modalContainers.forEach((container) => {
+      const openBtn = container.querySelector('.modal-open-btn')
+      const overlay = container.querySelector('.modal-overlay')
+      const closeBtns = container.querySelectorAll('.modal-close-btn')
+    
+      // Open Modal
+      openBtn.addEventListener('click', () => {
+        overlay.classList.remove('hidden')
+        document.body.style.overflow = 'hidden' // Stop background scrolling
+      })
+    
+      // Close Modal (Loop through X button and Cancel button)
+      closeBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          overlay.classList.add('hidden')
+          document.body.style.overflow = '' // Re-enable scrolling
+        })
+      })
+    
+      // Close if clicking outside the white box
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.add('hidden')
+          document.body.style.overflow = ''
+        }
+      })
     })
   </script>
 {% endblock %}

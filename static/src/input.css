@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+@source "../node_modules/flowbite-datepicker";
 /* Replace '.venv' with the actual name of your virtual environment folder */
 @source "../../.venv/lib/python*/site-packages/crispy_tailwind/**/*.html";
 @source "../../templates/**/*.html";

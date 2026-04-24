@@ -13,36 +13,65 @@
     <link rel="stylesheet" href="{% static 'css/output.css' %}" />
     <script src="https://kit.fontawesome.com/623f5e8dbe.js" crossorigin="anonymous"></script>
 
-  </head>
-<body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
-  {% include 'plants/navbar.html' %}
-
-  <main class="grid grid-cols-1 lg:grid-cols-4 gap-4 grow w-full max-w-400 mx-auto px-4">
+    <script src="{% static 'js/navbar.js' %}"></script>
     
-    <aside class="hidden lg:block lg:col-span-1">
-      <div class="sticky top-17 h-[calc(100vh-(--spacing(20)))] overflow-y-auto p-4">
-        <div class="bg-white rounded-lg shadow p-4">
-          Left/Top Content
-        </div>
-      </div>
-    </aside>
+  </head>
+  <body class="bg-gray-100 text-gray-900 flex flex-col min-h-screen">
+    {% include 'plants/navbar.html' %}
 
-    <section class="col-span-1 lg:col-span-2 py-4">
-      <div class="bg-white rounded-lg shadow min-h-[200vh] p-4">
-        {% block content %}
+    <main class="grid grid-cols-1 lg:grid-cols-4 gap-4 grow w-full max-w-400 mx-auto px-4">
+      <aside class="hidden lg:block lg:col-span-1">
+        <div class="sticky top-17 h-[calc(100vh-(--spacing(20)))] overflow-y-auto p-4">
+          <div class="space-y-6">
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+              <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Garden Status</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-3 rounded-xl">
+                  <span class="block text-2xl font-bold text-blue-600">12</span>
+                  <span class="text-xs text-blue-400 font-medium">Total Plants</span>
+                </div>
+                <div class="bg-red-50 p-3 rounded-xl">
+                  <span class="block text-2xl font-bold text-red-600">3</span>
+                  <span class="text-xs text-red-400 font-medium">Need Water</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+              <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Quick Filter</h3>
+              <div class="space-y-2">
+                <button class="w-full flex items-center justify-between p-2 rounded-lg bg-gray-50 text-gray-700 hover:bg-green-50 hover:text-green-600 transition">
+                  <span class="text-sm font-medium">All Collection</span>
+                  <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </button>
+                <button class="w-full flex items-center justify-between p-2 rounded-lg text-gray-500 hover:bg-gray-50 transition">
+                  <span class="text-sm font-medium">Recently Added</span>
+                  <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="col-span-1 lg:col-span-2 py-4">
+        <div class="bg-white rounded-lg shadow min-h-[200vh] p-4">
+          {% block content %}
+
           {% endblock %}
-      </div>
-    </section>
-
-    <aside class="hidden lg:block lg:col-span-1">
-      <div class="sticky top-17 h-[calc(100vh-(spacing.20))] overflow-y-auto p-4">
-        <div class="bg-white rounded-lg shadow p-4">
-          Right/Top Content
         </div>
-      </div>
-    </aside>
+      </section>
 
-  </main>
+      <aside class="hidden lg:block lg:col-span-1">
+        <div class="sticky top-17 h-[calc(100vh-(spacing.20))] overflow-y-auto p-4">
+          <div class="bg-white rounded-lg shadow p-4">
+            
+<h3>Right Side</h3>
 
-</body>
+
+          </div>
+        </div>
+      </aside>
+    </main>
+  </body>
 </html>

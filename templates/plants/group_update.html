@@ -1,0 +1,15 @@
+{% extends 'plants/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <form method="POST" action="{% url 'plants:group_update' group.id %}">
+            {% csrf_token %}  
+            {{ form | crispy }}
+            <button type="submit" class="">Update</button>
+        </form>
+</div>
+
+
+
+
+{% endblock %}
